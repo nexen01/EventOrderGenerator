@@ -1,0 +1,27 @@
+---
+title: "Event Association Finder"
+output: 
+  html_notebook:
+    toc: yes
+    toc_float: yes
+author: Mark Klinchin, 
+        Illinois Institute of Technology
+---
+
+### Imorting Libraries as Well as the input data
+```{r}
+library(arules)
+library(arulesViz)
+transactions <- read.transactions("EZ2019.csv", sep=",")
+```
+### Finding frequent itemsets
+```{r}
+#inspect(sort(f_is, decreasing = T, by="count"))
+f_is <- apriori(transactions, parameter=list(support=0.0, target="frequent itemsets", confidence = 0.0, minlen=2, maxlen=2))
+frequent_itemsets_dataframe <- as.data.frame(inspect(sort(f_is, decreasing = T, by="count")))
+items_and_support <- subset(frequent_itemsets_dataframe, select = c("items", "support"))
+print(items_and_support)
+``` 
+
+From here, I sorted the items_and_support table by support and put the list of every pair of events into the python notebook that mined orders of events
+
